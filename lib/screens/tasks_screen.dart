@@ -1,8 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gradient_colors/flutter_gradient_colors.dart';
 
-class TastsScreen extends StatelessWidget {
-  const TastsScreen({Key? key}) : super(key: key);
+class TasksScreen extends StatefulWidget {
+  @override
+  State<TasksScreen> createState() => _TasksScreenState();
+}
+
+class _TasksScreenState extends State<TasksScreen> {
+  bool isChecked = false;
 
   @override
   Widget build(BuildContext context) {
@@ -126,8 +131,20 @@ class TastsScreen extends StatelessWidget {
                   padding: const EdgeInsets.all(8),
                   children: <Widget>[
                     ListTile(
-                      title: Text('This is title.'),
-                      trailing: Checkbox(value: false, onChanged: null),
+                      title: Text(
+                        'This is title.',
+                        style: TextStyle(
+                            decoration:
+                                isChecked ? TextDecoration.lineThrough : null),
+                      ),
+                      trailing: TaskCheckBox(isChecked, (bool checkboxState) {
+                        setState(
+                          () {
+                            isChecked = checkboxState;
+                            // print('Valuse is now : $newValue');
+                          },
+                        );
+                      }),
                     ),
                   ],
                 ),
@@ -144,6 +161,22 @@ class TastsScreen extends StatelessWidget {
           ],
         ),
       ),
+    );
+  }
+}
+
+class TaskCheckBox extends StatelessWidget {
+  final bool checkboxState;
+  final dynamic toggleCheckboxState;
+
+  TaskCheckBox(this.checkboxState, this.toggleCheckboxState);
+
+  @override
+  Widget build(BuildContext context) {
+    return Checkbox(
+      activeColor: Colors.lightBlueAccent,
+      value: checkboxState,
+      onChanged: toggleCheckboxState,
     );
   }
 }
